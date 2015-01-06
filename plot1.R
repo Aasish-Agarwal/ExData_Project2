@@ -19,3 +19,19 @@
 #
 # Re-executing getdata.R will not load the data sets again if already loaded
 source("getdata.R")
+
+##############################################################################
+# Agreegate total emissions from PM2.5
+# Total emissions are recorded in variable total_emissions as million tons
+# Total emission in million tons is also rounded to 2 decimal places
+
+library(dplyr)
+NEI_group_by_year <- NEI %>%
+  tbl_df() %>%
+  select(Emissions,year) %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year) %>%
+  summarize(total_emissions = round(sum(Emissions)/1000000,2)) %>%
+  print
+
+  
