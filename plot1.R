@@ -31,7 +31,29 @@ NEI_group_by_year <- NEI %>%
   select(Emissions,year) %>%
   mutate(year = as.factor(year)) %>%
   group_by(year) %>%
-  summarize(total_emissions = round(sum(Emissions)/1000000,2)) %>%
-  print
+  summarize(total_emissions = round(sum(Emissions)/1000000,2)) 
 
-  
+
+##############################################################################
+# CREATE PNG File
+
+# Creating Plot
+# Setting margins
+par(mai = c(1.2,1.2,0.75,0.5))
+
+# Plot with increased size of the symbol, no line
+par(lty = 0, cex = 1.5 , cex.axis = 0.7 , cex.lab = 0.7 , cex.main = 0.8)
+
+with(NEI_group_by_year, {plot(year,total_emissions, type = "n", xlab = "year" , 
+                              ylab = "Total Emissions (Million Ton)" ,
+                              main = "Total PM25 Emissions")
+                         points(year,total_emissions, pch = 8, col = "red" )
+                         })
+
+dev.copy(png,file = "plot1.png", width = 480, height = 480, units = "px")
+
+# Winding up by closing png device
+dev.off()
+
+cat("\nCreated plot1.png in your working directory")
+
