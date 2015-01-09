@@ -6,19 +6,30 @@
 
 ##############################################################################
 # DOWNLOAD ,UNCOMPRESS, LOAD Data
-# Code for downloading and uncompressing test data resides in getdata.R
-# Code is executed as we source getdata.R
+
 # File "FNEI_data.zip" is downloaded only once
-# If for some reason file must be downloaded again, manualr remove the existing file from your working directory.
-#
-# Script also uncompresses FNEI_data.zip 
-#
-# Data sets are than loaded into objects NEI & SCC  
-#   NEI <- readRDS("summarySCC_PM25.rds")
-#   SCC <- readRDS("Source_Classification_Code.rds")
-#
-# Re-executing getdata.R will not load the data sets again if already loaded
-source("getdata.R")
+# If for some reason file must be downloaded again, manualy remove the existing file from your working directory.
+
+# Download And Unzip Data File
+url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
+projectDatafile <- "FNEI_data.zip"
+
+cat("\nDownloadoing data set if not already exists: " , projectDatafile)
+if (! file.exists(projectDatafile)){
+  cat("\nStaring data download")
+  download.file(url , projectDatafile, method = "curl")
+  unzip(projectDatafile)
+} else {
+  cat("\nFile already downloaded")
+} 
+
+# Load data sets if not already loaded
+cat("\nLoading data sets if not already loaded")
+if (!exists("NEI")) {
+  NEI <- readRDS("summarySCC_PM25.rds")
+  SCC <- readRDS("Source_Classification_Code.rds")
+}
+cat("\nDone with data load")
 
 ##############################################################################
 # Agreegate total emissions from PM2.5
@@ -29,7 +40,6 @@ library(dplyr)
 NEI_group_by_year <- NEI %>%
   tbl_df() %>%
   select(Emissions,year) %>%
-  mutate(year = as.factor(year)) %>%
   group_by(year) %>%
   summarize(total_emissions = round(sum(Emissions)/1000000,2)) 
 
@@ -42,13 +52,16 @@ NEI_group_by_year <- NEI %>%
 par(mai = c(1.2,1.2,0.75,0.5))
 
 # Plot with increased size of the symbol, no line
-par(lty = 0, cex = 1.5 , cex.axis = 0.7 , cex.lab = 0.7 , cex.main = 0.8)
+par(lty = 1, cex = 1.5 , cex.axis = 0.7 , cex.lab = 0.7 , cex.main = 0.8)
 
 with(NEI_group_by_year, {plot(year,total_emissions, type = "n", xlab = "year" , 
                               ylab = "Total Emissions (Million Ton)" ,
                               main = "Total PM25 Emissions")
-                         points(year,total_emissions, pch = 8, col = "red" )
+                         points(year,total_emissions, pch = 19, col = "red" )
                          })
+
+model <- lm(total_emissions ~ year, NEI_group_by_year)
+abline(model, lwd = 2, col = "blue", lty = 3)
 
 dev.copy(png,file = "plot1.png", width = 480, height = 480, units = "px")
 
