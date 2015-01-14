@@ -55,7 +55,7 @@ par(lty = 1, cex = 1.5 , cex.axis = 0.7 , cex.lab = 0.7 , cex.main = 0.8)
 
 with(NEI_group_by_year, {plot(year,total_emissions, type = "n", xlab = "year" , 
                               ylab = "Emissions (1000 Ton)" ,
-                              main = "Baltimore PM25 Emissions")
+                              main = "Baltimore City, Maryland - PM25 Emissions")
                          points(year,total_emissions, pch = 19, col = "red" )
                          })
 
