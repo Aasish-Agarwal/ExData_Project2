@@ -31,9 +31,9 @@ if (!exists("NEI")) {
 cat("\nDone with data load")
 
 ##############################################################################
-# Agreegate total emissions from PM2.5
-# Total emissions are recorded in variable total_emissions as million tons
-# Total emission in million tons is also rounded to 2 decimal places
+# Agreegate total emissions from PM2.5 for fips "24510"
+# Total emissions are recorded in variable total_emissions as 1000 tons
+# Total emission in 1000 tons is also rounded to 2 decimal places
 
 library(dplyr)
 NEI_group_by_year <- NEI %>%
