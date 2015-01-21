@@ -1,7 +1,9 @@
 # #############################################################################
 # Objective
-#   Have total emissions from PM2.5 decreased in the Baltimore City&, Maryland (fips == "24510")
-#   from 1999 to 2008? Use the base plotting system to make a plot answering this question.
+#   Of the four types of sources indicated by the type (point, nonpoint, onroad, nonroad)
+#   variable, which of these four sources have seen decreases in emissions from 1999-2008
+#   for Baltimore City? Which have seen increases in emissions from 1999-2008? 
+#   Use the ggplot2 plotting system to make a plot answer this question.
 
 ##############################################################################
 # DOWNLOAD ,UNCOMPRESS, LOAD Data
@@ -38,29 +40,18 @@ cat("\nDone with data load")
 library(dplyr)
 NEI_group_by_year <- NEI %>%
   tbl_df() %>%
+  group_by(type,year) %>%
   filter(fips == "24510") %>%
-  group_by(year) %>%
-  summarize(total_emissions = round(sum(Emissions)/1000,2)) 
+  summarize(total_emissions = sum(Emissions) )  
 
 
 ##############################################################################
 # CREATE PNG File
 
-# Creating Plot
-# Setting margins
-par(mai = c(1.2,1.2,0.75,0.5))
-
-# Plot with increased size of the symbol, no line
-par(lty = 1, cex = 1.5 , cex.axis = 0.7 , cex.lab = 0.7 , cex.main = 0.8)
-
-with(NEI_group_by_year, {plot(year,total_emissions, type = "n", xlab = "year" , 
-                              ylab = "Emissions (1000 Ton)" ,
-                              main = "Baltimore City, Maryland - PM25 Emissions")
-                         points(year,total_emissions, pch = 19, col = "red" )
-                         })
-
-model <- lm(total_emissions ~ year, NEI_group_by_year)
-abline(model, lwd = 2, col = "blue", lty = 3)
+qplot(year, total_emissions, data=NEI_group_by_year , facets = type ~ . , 
+      binwidth = 2, color = type,
+      ylab = "Total Emissions (Tons)",
+      geom=c("point","smooth"))
 
 dev.copy(png,file = "plot3.png", width = 480, height = 480, units = "px")
 
