@@ -33,12 +33,11 @@ if (!exists("NEI")) {
 cat("\nDone with data load")
 
 ##############################################################################
-# Agreegate total emissions from PM2.5 for fips "24510"
-# Total emissions are recorded in variable total_emissions as 1000 tons
-# Total emission in 1000 tons is also rounded to 2 decimal places
+# Agreegate total emissions from PM2.5 for fips "24510" agreegated by source type
+# Total emissions are recorded in variable total_emissions 
 
 library(dplyr)
-NEI_group_by_year <- NEI %>%
+NEI_group_by_type <- NEI %>%
   tbl_df() %>%
   group_by(type,year) %>%
   filter(fips == "24510") %>%
@@ -48,7 +47,7 @@ NEI_group_by_year <- NEI %>%
 ##############################################################################
 # CREATE PNG File
 
-g <- ggplot(NEI_group_by_year, aes(year,total_emissions ))
+g <- ggplot(NEI_group_by_type, aes(year,total_emissions ))
 p <- g + geom_point() + 
   facet_grid(. ~ type) + 
   facet_wrap( ~ type, nrow = 2, ncol = 2) + 
