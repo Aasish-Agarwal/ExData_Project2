@@ -49,7 +49,13 @@ NEI_group_by_year <- NEI %>%
 # CREATE PNG File
 
 g <- ggplot(NEI_group_by_year, aes(year,total_emissions ))
-g + geom_point() + facet_grid(. ~ type) + facet_wrap( ~ type, nrow = 2, ncol = 2) + labs(y = "Total Emissions")
+p <- g + geom_point() + 
+  facet_grid(. ~ type) + 
+  facet_wrap( ~ type, nrow = 2, ncol = 2) + 
+  labs(y = "Total Emissions (Tons)") +
+  ggtitle("Emissions By Type - Baltimore")
+
+print(p)
 
 dev.copy(png,file = "plot3.png", width = 480, height = 480, units = "px")
 
