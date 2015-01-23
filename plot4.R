@@ -1,13 +1,3 @@
-# #############################################################################
-# Objective
-#   Across the United States, how have emissions from coal combustion-related sources changed from 1999-2008?
-
-##############################################################################
-# DOWNLOAD ,UNCOMPRESS, LOAD Data
-
-# File "FNEI_data.zip" is downloaded only once
-# If for some reason file must be downloaded again, manualy remove the existing file from your working directory.
-
 # Download And Unzip Data File
 url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
 projectDatafile <- "FNEI_data.zip"
@@ -31,7 +21,7 @@ cat("\nDone with data load")
 
 ##############################################################################
 # Agreegate total emissions from PM2.5 agreegated by fuel (SCC)
-# Total emissions are recorded in variable total_emissions 
+# Total emissions in 1000's are recorded in variable total_emissions 
 
 library(dplyr)
 library(ggplot2)
