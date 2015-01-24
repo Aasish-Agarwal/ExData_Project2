@@ -52,7 +52,7 @@ NEI_group_by_fuel <- NEI_group_by_fuel %>%
 g <- ggplot(NEI_group_by_fuel, aes(year,total_emissions ))
 p <- g + geom_point(aes(color = City), size=5, shape=21) + 
   facet_grid( EI.Sector ~ ., scales="free", as.table=F) +
-  labs(y = "Total Emissions (1000 Tons)") +
+  labs(y = "Total Emissions (Tons)") +
   ggtitle("Emissions By Fuel Type")
 
 print(p)
