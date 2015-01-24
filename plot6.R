@@ -34,25 +34,30 @@ NEI_group_by_fuel <- NEI %>%
   group_by(fips,year,SCC) %>%
   summarize(total_emissions = sum(Emissions) )  
 
+fipsmap <- data.frame(fips= c("24510","06037"), City= c("Baltimore City", "Los Angeles County"))
+
 NEI_group_by_fuel <- merge(NEI_group_by_fuel,SCC,by="SCC",all.x = T)  %>% tbl_df()
+
+NEI_group_by_fuel <- merge(NEI_group_by_fuel,fipsmap,by="fips",all.x = T)  %>% tbl_df()
+
 NEI_group_by_fuel <-   filter(NEI_group_by_fuel , grepl("Vehicles", EI.Sector))
 
 NEI_group_by_fuel <- NEI_group_by_fuel %>%
-  group_by(fips,year,EI.Sector) %>%
+  group_by(City,year,EI.Sector) %>%
   summarize(total_emissions = sum(total_emissions) )  
 
 ##############################################################################
 # CREATE PNG File
 
 g <- ggplot(NEI_group_by_fuel, aes(year,total_emissions ))
-p <- g + geom_point(aes(color = fips)) + 
+p <- g + geom_point(aes(color = City), size=5, shape=21) + 
   facet_grid( EI.Sector ~ ., scales="free", as.table=F) +
   labs(y = "Total Emissions (1000 Tons)") +
   ggtitle("Emissions By Fuel Type")
 
 print(p)
 
-dev.copy(png,file = "plot6.png", width = 480, height = 880, units = "px")
+dev.copy(png,file = "plot6.png", width = 680, height = 1080, units = "px")
 
 # Winding up by closing png device
 dev.off()
