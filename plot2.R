@@ -44,28 +44,15 @@ NEI_group_by_year <- NEI %>%
 
 
 ##############################################################################
-# CREATE PNG File
-
 # Creating Plot
-# Setting margins
-par(mai = c(1.2,1.2,0.75,0.5))
-
-# Plot with increased size of the symbol, no line
-par(lty = 1, cex = 1.5 , cex.axis = 0.7 , cex.lab = 0.7 , cex.main = 0.8)
-
-with(NEI_group_by_year, {plot(year,total_emissions, type = "n", xlab = "year" , 
-                              ylab = "Emissions (1000 Ton)" ,
-                              main = "Baltimore City, Maryland - PM25 Emissions")
-                         points(year,total_emissions, pch = 19, col = "red" )
-                         })
-
-model <- lm(total_emissions ~ year, NEI_group_by_year)
-abline(model, lwd = 2, col = "blue", lty = 3)
-
+barplot(NEI_group_by_year$total_emissions, 
+        names.arg = NEI_group_by_year$year,
+        ylab = "Emissions (1000 Ton)",
+        density = 80,
+        col = "wheat3",
+        axis.lty = 1,
+        main = "Baltimore City, Maryland - PM25 Emissions")
 dev.copy(png,file = "plot2.png", width = 480, height = 480, units = "px")
-
 # Winding up by closing png device
 dev.off()
-
-cat("\nCreated plot2.png in your working directory")
 
