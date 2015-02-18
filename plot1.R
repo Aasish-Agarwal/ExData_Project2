@@ -54,14 +54,14 @@ par(mai = c(1.2,1.2,0.75,0.5))
 # Plot with increased size of the symbol, no line
 par(lty = 1, cex = 1.5 , cex.axis = 0.7 , cex.lab = 0.7 , cex.main = 0.8)
 
-with(NEI_group_by_year, {plot(year,total_emissions, type = "n", xlab = "year" , 
+with(NEI_group_by_year, {plot(year,total_emissions, type = "l", xlab = "year" , 
                               ylab = "Total Emissions (Million Ton)" ,
                               main = "Total PM25 Emissions")
                          points(year,total_emissions, pch = 19, col = "red" )
                          })
 
 model <- lm(total_emissions ~ year, NEI_group_by_year)
-abline(model, lwd = 2, col = "blue", lty = 3)
+abline(model, lwd = 2, col = "magenta1", lty = 1)
 
 dev.copy(png,file = "plot1.png", width = 480, height = 480, units = "px")
 
